@@ -2,6 +2,7 @@ from Domain.rezervare import get_str, creeaza_rezervare
 from Logic.clasa_superioara import clasa_superioara_pentru_nume
 from Logic.crud import create, update, delete
 from Logic.ieftinire_procentaj import ieftinire_procentaj_pentru_checkin
+from Logic.ordonare_descrescator import get_ordonare_descrescator_dupa_pret
 from Logic.pret_maxim_pe_clasa import pret_maxim_per_clasa
 
 
@@ -10,6 +11,7 @@ def show_menu():
     print('2.TRECEREA LA O CLASA SUPERIOARA')
     print('3.IEFTINIRE CU UN PROCENTAJ')
     print('4.PRET MAXIM PENTRU FIECARE CLASA')
+    print('5.ORDONARE DESCRESCATOARE DUPA PRET')
     print('x.IESIRE')
 
 
@@ -101,6 +103,11 @@ def handle_pret_maxim_pe_clasa(rezervari):
         print(f'{clasa}: Pretul maxim este {result[clasa]}')
 
 
+def handle_ordonare_descrescator(rezervari):
+    ordonate = get_ordonare_descrescator_dupa_pret(rezervari)
+    handle_show_all(ordonate)
+
+
 def run_ui(rezervari):
     while True:
         show_menu()
@@ -113,6 +120,8 @@ def run_ui(rezervari):
             rezervari = handle_ieftinire_procentaj(rezervari)
         elif optiune == '4':
             handle_pret_maxim_pe_clasa(rezervari)
+        elif optiune == '5':
+            handle_ordonare_descrescator(rezervari)
         elif optiune == 'x':
             break
         else:
