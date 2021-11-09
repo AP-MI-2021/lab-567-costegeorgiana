@@ -6,7 +6,8 @@ from UserInterface.console import handle_show_all
 
 def show_new_menu():
     print("INTRODUCETI OPTIUNILE CU ';' INTRE ELE.")
-    print("add - ADAUGAREA UNEI REZERVARI.(Exemplu: add : id, nume, clasa, pret, checkin;)")
+    print("add - ADAUGAREA UNEI REZERVARI./"
+          "(Exemplu: add : id, nume, clasa(economy/ economy plus/ business), pret, checkin;)")
     print("showall - AFISAREA LISTE DE REZERVARI. (Exemplu: showall;)")
     print("delete - STERGEREA UNEI REZERVARI. (Exemplu: delete : id;)")
     print("ordonare - ORDONAREA REZERVARILOR DESCRESCATOR DUPA PRET. (Exemplu: ordonare;)")
@@ -23,7 +24,7 @@ def handle_new_add(rezervari, rezervare):
             pret = float(rezervare_split[3])
             if rezervare_split[4] == ' da' or rezervare_split[4] == ' nu':
                 checkin = rezervare_split[4]
-                return create(rezervari, id_rezervare, nume, clasa, pret, checkin)
+                return create(rezervari, id_rezervare, nume, clasa, pret, checkin, [], [])
         else:
             print('Eroare:', TypeError(f'Trebuie pus "," dupa fiecare camp.'))
     except ValueError as ve:
@@ -40,7 +41,7 @@ def handle_new_delete(rezervari, id_rez: int):
     try:
         id_rezervare = id_rez
         print("Stergerea a fost efectuata cu succes.")
-        return delete(rezervari, id_rezervare)
+        return delete(rezervari, id_rezervare, [], [])
     except ValueError as ve:
         print('Eroare: ', ve)
 

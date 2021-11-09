@@ -2,7 +2,7 @@ from Domain.rezervare import creeaza_rezervare
 from Domain.rezervare import get_id
 
 
-def create(lst_rezervari, id_rezervare: int, nume, clasa, pret, checkin):
+def create(lst_rezervari, id_rezervare: int, nume, clasa, pret, checkin, undo_list, redo_list):
     """
     Creeaza o rezervare.
     :param lst_rezervari: lista de rezervari
@@ -11,12 +11,16 @@ def create(lst_rezervari, id_rezervare: int, nume, clasa, pret, checkin):
     :param clasa: clasa zborului
     :param pret: pretul zborului
     :param checkin: checkin
+    :param undo_list:
+    :param redo_list:
     :return: o rezervare
     """
     if read_rezervari(lst_rezervari, id_rezervare) is not None:
         raise ValueError(f'Exista deja o rezervare cu id-ul {id_rezervare}')
 
     rezervare = creeaza_rezervare(id_rezervare, nume, clasa, pret, checkin)
+    undo_list.append(lst_rezervari)
+    redo_list.clear()
     return lst_rezervari + [rezervare]
 
 
@@ -41,11 +45,13 @@ def read_rezervari(lst_rezervari, id_rezervare: int = None):
     return None
 
 
-def update(lst_rezervari, new_rezervare):
+def update(lst_rezervari, new_rezervare, undo_list, redo_list):
     """
     Actualizeaza o rezervare.
     :param lst_rezervari: lista cu rezervari
     :param new_rezervare: rezervarea actualizata
+    :param undo_list:
+    :param redo_list:
     :return:o lista cu rezervari actualizata
     """
     if read_rezervari(lst_rezervari, get_id(new_rezervare)) is None:
@@ -57,14 +63,18 @@ def update(lst_rezervari, new_rezervare):
             new_rezervari.append(rezervare)
         else:
             new_rezervari.append(new_rezervare)
+    undo_list.append(lst_rezervari)
+    redo_list.clear()
     return new_rezervari
 
 
-def delete(lst_rezervari, id_rezervare: int):
+def delete(lst_rezervari, id_rezervare: int, undo_list, redo_list):
     """
     Stergerea unei rezervari dupa id-ul dat.
     :param lst_rezervari: lista de rezervari
     :param id_rezervare: id-ul rezervarii
+    :param undo_list:
+    :param redo_list
     :return: lista de rezervari fara rezervarea cu id-ul id_rezervare
     """
     if read_rezervari(lst_rezervari, id_rezervare) is None:
@@ -73,4 +83,6 @@ def delete(lst_rezervari, id_rezervare: int):
     for rezervare in lst_rezervari:
         if get_id(rezervare) != id_rezervare:
             new_rezervari.append(rezervare)
+    undo_list.append(lst_rezervari)
+    redo_list.clear()
     return new_rezervari

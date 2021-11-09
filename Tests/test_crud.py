@@ -14,13 +14,13 @@ def get_data():
 
 def test_create():
     rezervari = get_data()
-    params = (6, 'rino34', 'business', 3000, 'nu')
-    r_new = creeaza_rezervare(*params)
+    params = (6, 'rino34', 'business', 3000, 'nu', [], [])
+    r_new = creeaza_rezervare(*params[:-2])
     new_rezervari = create(rezervari, *params)
     assert len(new_rezervari) == len(rezervari) + 1
     assert r_new in new_rezervari
     # testam daca se lanseaza exceptie pentru id duplicat
-    params2 = (6, 'aero87', 'economy', 2000, 'nu')
+    params2 = (6, 'aero87', 'economy', 2000, 'nu', [], [])
     try:
         _ = create(new_rezervari, *params2)
         assert False
@@ -38,7 +38,7 @@ def test_read():
 def test_update():
     rezervari = get_data()
     rez_updated = creeaza_rezervare(2, 'aero76', 'business', 3500, 'nu')
-    updated = update(rezervari, rez_updated)
+    updated = update(rezervari, rez_updated, [], [])
     assert rez_updated in updated
     assert rez_updated not in rezervari
     assert len(updated) == len(rezervari)
@@ -48,7 +48,7 @@ def test_delete():
     rezervari = get_data()
     to_delete = 3
     rez_deleted = read_rezervari(rezervari, to_delete)
-    deleted = delete(rezervari, to_delete)
+    deleted = delete(rezervari, to_delete, [], [])
     assert rez_deleted not in deleted
     assert rez_deleted in rezervari
     assert len(deleted) == len(rezervari) - 1
