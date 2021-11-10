@@ -5,7 +5,7 @@ from Logic.ieftinire_procentaj import ieftinire_procentaj_pentru_checkin
 from Logic.ordonare_descrescator import get_ordonare_descrescator_dupa_pret
 from Logic.pret_maxim_pe_clasa import pret_maxim_per_clasa
 from Logic.sume_pret_pe_nume import sume_preturi_pentru_nume
-from Logic.undo_redo import do_undo
+from Logic.undo_redo import do_undo, do_redo
 
 
 def show_menu():
@@ -16,6 +16,7 @@ def show_menu():
     print('5.ORDONARE DESCRESCATOARE DUPA PRET')
     print('6.AFISAREA SUMELOR PRETURILOR PENTRU FIECARE NUME.')
     print('u. UNDO')
+    print('r. REDO')
     print('x.IESIRE')
 
 
@@ -125,6 +126,13 @@ def handle_undo(rezervari, undo_list, redo_list):
     return rezervari
 
 
+def handle_redo(rezervari, undo_list, redo_list):
+    redo_result = do_redo(undo_list, redo_list, rezervari)
+    if redo_result is not None:
+        return redo_result
+    return rezervari
+
+
 def run_ui(rezervari, undo_list, redo_list):
     while True:
         handle_show_all(rezervari)
@@ -144,6 +152,8 @@ def run_ui(rezervari, undo_list, redo_list):
             handle_sume_pret_pe_nume(rezervari)
         elif optiune == 'u':
             rezervari = handle_undo(rezervari, undo_list, redo_list)
+        elif optiune == 'r':
+            rezervari = handle_redo(rezervari, undo_list, redo_list)
         elif optiune == 'x':
             break
         else:
