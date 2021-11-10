@@ -84,19 +84,19 @@ def handle_crud(rezervari, undo_list, redo_list):
     return rezervari
 
 
-def handle_clasa_superioara(rezervari):
+def handle_clasa_superioara(rezervari, undo_list, redo_list):
     try:
         nume1 = input('Dati numele pentru care vreti sa efectuati modificarea: ')
-        return clasa_superioara_pentru_nume(rezervari, nume1)
+        return clasa_superioara_pentru_nume(rezervari, nume1, undo_list, redo_list)
     except ValueError as ve:
         print('Eroare: ', ve)
     return rezervari
 
 
-def handle_ieftinire_procentaj(rezervari):
+def handle_ieftinire_procentaj(rezervari, undo_list, redo_list):
     try:
         procentaj = int(input('Dati procentajul cu care vreti sa se efectueze ieftinirea (0-100): '))
-        return ieftinire_procentaj_pentru_checkin(rezervari, procentaj)
+        return ieftinire_procentaj_pentru_checkin(rezervari, procentaj, undo_list, redo_list)
     except ValueError as ve:
         print('Eroare: ', ve)
     return rezervari
@@ -141,9 +141,9 @@ def run_ui(rezervari, undo_list, redo_list):
         if optiune == '1':
             rezervari = handle_crud(rezervari, undo_list, redo_list)
         elif optiune == '2':
-            rezervari = handle_clasa_superioara(rezervari)
+            rezervari = handle_clasa_superioara(rezervari, undo_list, redo_list)
         elif optiune == '3':
-            rezervari = handle_ieftinire_procentaj(rezervari)
+            rezervari = handle_ieftinire_procentaj(rezervari, undo_list, redo_list)
         elif optiune == '4':
             handle_pret_maxim_pe_clasa(rezervari)
         elif optiune == '5':

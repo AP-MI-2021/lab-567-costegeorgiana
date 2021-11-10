@@ -1,5 +1,6 @@
 from Domain.rezervare import creeaza_rezervare, get_id
 from Logic.crud import create, read_rezervari, update, delete
+from Logic.undo_redo import do_undo, do_redo
 
 
 def get_data():
@@ -37,21 +38,33 @@ def test_read():
 
 def test_update():
     rezervari = get_data()
+    undo_list = []
+    redo_list = []
     rez_updated = creeaza_rezervare(2, 'aero76', 'business', 3500, 'nu')
-    updated = update(rezervari, rez_updated, [], [])
-    assert rez_updated in updated
+    rezervari = update(rezervari, rez_updated, undo_list, redo_list)
+    assert rez_updated in rezervari
+    rezervari = do_undo(undo_list, redo_list, rezervari)
     assert rez_updated not in rezervari
-    assert len(updated) == len(rezervari)
+    rezervari = do_redo(undo_list, redo_list, rezervari)
+    assert rez_updated in rezervari
 
 
 def test_delete():
     rezervari = get_data()
+    lungime = len(rezervari)
+    undo_list = []
+    redo_list = []
     to_delete = 3
     rez_deleted = read_rezervari(rezervari, to_delete)
-    deleted = delete(rezervari, to_delete, [], [])
-    assert rez_deleted not in deleted
+    rezervari = delete(rezervari, to_delete, undo_list, redo_list)
+    assert rez_deleted not in rezervari
+    assert lungime == len(rezervari) + 1
+    rezervari = do_undo(undo_list, redo_list, rezervari)
     assert rez_deleted in rezervari
-    assert len(deleted) == len(rezervari) - 1
+    assert lungime == len(rezervari)
+    rezervari = do_redo(undo_list, redo_list, rezervari)
+    assert rez_deleted not in rezervari
+    assert lungime == len(rezervari) + 1
 
 
 def test_crud():

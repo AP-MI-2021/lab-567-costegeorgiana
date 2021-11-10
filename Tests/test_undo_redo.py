@@ -33,3 +33,5 @@ def test_undo_redo():
     rezervari = do_redo(undo_list, redo_list, rezervari)
     rezervari = do_redo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 2
+    assert do_redo(undo_list, redo_list, rezervari) is None
+    assert len(rezervari) == 2
