@@ -1,4 +1,4 @@
-from Logic.crud import create
+from Logic.crud import create, read_rezervari
 from Logic.undo_redo import do_undo, do_redo
 
 
@@ -11,10 +11,13 @@ def test_undo_redo():
     rezervari = create(rezervari, 3, 'aero12', 'economy plus', 3456, 'nu', undo_list, redo_list)
     rezervari = do_undo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 2
+    assert read_rezervari(rezervari, 3) is None
     rezervari = do_undo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 1
+    assert read_rezervari(rezervari, 2) is None
     rezervari = do_undo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 0
+    assert read_rezervari(rezervari, 1) is None
     assert do_undo(undo_list, redo_list, rezervari) is None
     assert len(rezervari) == 0
     rezervari = create(rezervari, 1, 'axe12', 'economy', 1000, 'da', undo_list, redo_list)
@@ -26,10 +29,13 @@ def test_undo_redo():
     rezervari = do_undo(undo_list, redo_list, rezervari)
     rezervari = create(rezervari, 4, 'aero14', 'economy', 1601, 'nu', undo_list, redo_list)
     assert do_redo(undo_list, redo_list, rezervari) is None
+    assert read_rezervari(rezervari, 3) is None
     rezervari = do_undo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 1
+    assert read_rezervari(rezervari, 4) is None
     rezervari = do_undo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 0
+    assert read_rezervari(rezervari, 1) is None
     rezervari = do_redo(undo_list, redo_list, rezervari)
     rezervari = do_redo(undo_list, redo_list, rezervari)
     assert len(rezervari) == 2
